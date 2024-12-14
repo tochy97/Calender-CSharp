@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calender.Types
+namespace Calender
 {
     public struct _Year
     {
@@ -16,12 +16,15 @@ namespace Calender.Types
     {
         public _Year self;
 
-        public bool IsYearLeap(int year)
+        public static bool IsYearLeap(int year)
         {
             return year % 4 == 0;
         }
 
-        public
+        public _Year Calculate (int year)
+        {
+            return self;
+        }
 
     }
 }

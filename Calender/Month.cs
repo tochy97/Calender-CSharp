@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calender.Types
+namespace Calender
 {
     public struct _Month
     {
         public int index;
         public string name;
-        public List<_Day> days;
+        public List<_Week> days;
     }
     public class Month
     {
@@ -31,7 +31,7 @@ namespace Calender.Types
             "December" 
         };
 
-        public int GetMonthMax (int index, bool leap)
+        public static int GetMonthMax (int index, bool leap)
         {
             switch (index)
             {
@@ -60,7 +60,7 @@ namespace Calender.Types
             }
         }
 
-        public string GetNextMonth (string name)
+        public static string GetNextMonth (string name)
         {
             switch (name)
             {
@@ -93,7 +93,7 @@ namespace Calender.Types
             }
         }
 
-        public string GetPreviousMonth (string name)
+        public static string GetPreviousMonth (string name)
         {
             switch (name)
             {
@@ -124,6 +124,11 @@ namespace Calender.Types
                 default:
                     return "";
             }
+        }
+
+        public _Month Calculate(int day_index, string day_name, int month_index, bool leap)
+        {
+            return self;
         }
     }
 }

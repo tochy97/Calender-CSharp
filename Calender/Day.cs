@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Calender.Types
+namespace Calender
 {
 
     public struct _Day
@@ -107,5 +107,6 @@ namespace Calender.Types
                     return "";
             }
         }
+
     }
 }

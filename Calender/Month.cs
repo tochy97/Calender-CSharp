@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,12 +11,12 @@ namespace Calender
     {
         public int index;
         public string name;
-        public List<_Week> days;
+        public List<_Day> days;
     }
     public class Month
     {
         public _Month self;
-        public static readonly string[] value = 
+        public static readonly string[] values = 
         { 
             "January", 
             "Febuary",
@@ -31,6 +32,17 @@ namespace Calender
             "December" 
         };
 
+        public Month(string name, int index, List<_Day> days)
+        {
+            self.name = name;
+            self.index = index;
+            self.days = days;
+        }
+        public Month (string  name, int index)
+        {
+            self.name = name;
+            self.index = index;
+        }
         public static int GetMonthMax (int index, bool leap)
         {
             switch (index)
@@ -62,73 +74,58 @@ namespace Calender
 
         public static string GetNextMonth (string name)
         {
-            switch (name)
+            int position = Array.IndexOf(values, name) + 1;
+            if (position == -1)
             {
-                case "January":
-                    return "Febuary";
-                case "Febuary":
-                    return "March";
-                case "March":
-                    return "April";
-                case "April":
-                    return "May";
-                case "May":
-                    return "June";
-                case "June":
-                    return "July";
-                case "July":
-                    return "August";
-                case "August":
-                    return "September";
-                case "September":
-                    return "October";
-                case "October":
-                    return "November";
-                case "November":
-                    return "December";
-                case "December":
-                    return "January";
-                default:
-                    return "";
+                position = 0;
             }
+            name = values[position];
+            return name;
         }
 
         public static string GetPreviousMonth (string name)
         {
-            switch (name)
+            int position = Array.IndexOf(values, name) - 1;
+            if (position == -1)
             {
-                case "January":
-                    return "December";
-                case "Febuary":
-                    return "January";
-                case "March":
-                    return "Febuary";
-                case "April":
-                    return "March";
-                case "May":
-                    return "April";
-                case "June":
-                    return "May";
-                case "July":
-                    return "June";
-                case "August":
-                    return "July";
-                case "September":
-                    return "August";
-                case "October":
-                    return "September";
-                case "November":
-                    return "October";
-                case "December":
-                    return "November";
-                default:
-                    return "";
+                position = 11;
             }
+            name = values[position];
+            return name;
         }
 
-        public _Month Calculate(int day_index, string day_name, int month_index, bool leap)
+        public static List<_Day> CalcMonth(int day_index, string day_name, int month_index, bool leap)
         {
-            return self;
+            List<_Day> days = new List<_Day>();
+            Day day = new Day(day_name, day_index);
+            int maxIndex = GetMonthMax(month_index, leap);
+            days.Add(day.self);
+            // Going forward
+            while (day.MakeNextDay(maxIndex))
+            {
+                days.Add(day.self);
+            }
+            day.self = new _Day
+            {
+                name = day_name,
+                index = day_index
+            };
+            // Going backward
+            while (day.MakePrevDay())
+            {
+                days.Add(day.self);
+            }
+            return days;
+        }
+
+        public void SetDays(List<_Day> days)
+        {
+            self.days = days;
+        }
+
+        public List<_Day> GetDays()
+        {
+            return self.days;
         }
     }
 }

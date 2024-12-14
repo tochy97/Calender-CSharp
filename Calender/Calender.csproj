@@ -45,7 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Day.cs" />
     <Compile Include="Month.cs" />
-    <Compile Include="Week.cs" />
     <Compile Include="Year.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

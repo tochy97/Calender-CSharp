@@ -118,6 +118,15 @@ namespace Calender
             return days;
         }
 
+        public bool MakePrevMonth()
+        {
+            return true;
+        }
+        public bool MakeNextMonth()
+        {
+            return true;
+        }
+
         public void SetDays(List<_Day> days)
         {
             self.days = days;

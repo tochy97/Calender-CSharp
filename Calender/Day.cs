@@ -14,7 +14,7 @@ namespace Calender
     }
     public class Day
     {
-        public static readonly string[] value =
+        public static readonly string[] values =
         {
             "Sunday",
             "Monday",
@@ -62,50 +62,24 @@ namespace Calender
             };
         }
 
-        public string GetNextDay(string name)
+        public static string GetNextDay(string name)
         {
-            switch (name)
+            int position = Array.IndexOf(values, name) + 1;
+            if (position == -1)
             {
-                case "Monday":
-                    return "Tuesday";
-                case "Tuesday":
-                    return "Wednesday";
-                case "Wednesday":
-                    return "Thursday";
-                case "Thursday":
-                    return "Friday";
-                case "Friday":
-                    return "Saturday";
-                case "Saturday":
-                    return "Sunday";
-                case "Sunday":
-                    return "Monday";
-                default:
-                    return "";
+                position = 0;
             }
+            return values[position];
         }
 
-        public string GetPrevDay(string name)
+        public static string GetPrevDay(string name)
         {
-            switch (name)
+            int position = Array.IndexOf(values, name) - 1;
+            if (position == -1)
             {
-                case "Monday":
-                    return "Sunday";
-                case "Tuesday":
-                    return "Monday";
-                case "Wednesday":
-                    return "Tuesday";
-                case "Thursday":
-                    return "Wednesday";
-                case "Friday":
-                    return "Thursday";
-                case "Saturday":
-                    return "Friday";
-                case "Sunday":
-                    return "Saturday";
-                default:
-                    return "";
+                position = 6;
             }
+            return values[position];
         }
 
     }

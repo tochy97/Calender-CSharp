@@ -23,7 +23,7 @@ namespace Calender
             self.index = index;
         }
 
-        public static readonly string[] values =
+        private static readonly string[] values =
         {
             "Sunday",
             "Monday",
@@ -34,41 +34,6 @@ namespace Calender
             "Saturday"
         };
 
-        public static _Day MakeSunday(int value, string day)
-        {
-            if (value <= -7)
-            {
-                value += 7;
-            }
-            switch (day)
-            {
-                case "Monday":
-                    value -= 1;
-                    break;
-                case "Tuesday":
-                    value -= 2;
-                    break;
-                case "Wednesday":
-                    value -= 3;
-                    break;
-                case "Thursday":
-                    value -= 4;
-                    break;
-                case "Friday":
-                    value -= 5;
-                    break;
-                case "Saturday":
-                    value -= 6;
-                    break;
-                default:
-                    break;
-            }
-            return new _Day
-            {
-                name = "Sunday",
-                index = value
-            };
-        }
 
         public static _Day CalcNextDay(string name, int index, int maxMonthIndex)
         {

@@ -7,15 +7,11 @@ using System.Threading.Tasks;
 
 namespace Calender
 {
-    public struct _Month
+    public class Month
     {
         public int index;
         public string name;
-        public List<_Day> days;
-    }
-    public class Month
-    {
-        public _Month self;
+        public List<Day> days;
         public static readonly string[] values = 
         { 
             "January", 
@@ -31,18 +27,17 @@ namespace Calender
             "November",
             "December" 
         };
+        public Month (string name, int index, int day_index, string day_name, bool leap)
+        {
+            this.name = name;
+            this.index = index;
+            //this.days = Calculate(day_index, day_name, index, leap);
+        }
 
-        public Month(string name, int index, List<_Day> days)
-        {
-            self.name = name;
-            self.index = index;
-            self.days = days;
-        }
-        public Month (string  name, int index)
-        {
-            self.name = name;
-            self.index = index;
-        }
+        //public Month (Day day)
+        //{
+        //    days = Calculate(day.index);
+        //}
         public static int GetMonthMax (int index, bool leap)
         {
             switch (index)
@@ -94,29 +89,29 @@ namespace Calender
             return name;
         }
 
-        public static List<_Day> CalcMonth(int day_index, string day_name, int month_index, bool leap)
-        {
-            List<_Day> days = new List<_Day>();
-            Day day = new Day(day_name, day_index);
-            int maxIndex = GetMonthMax(month_index, leap);
-            days.Add(day.self);
-            // Going forward
-            while (day.MakeNextDay(maxIndex))
-            {
-                days.Add(day.self);
-            }
-            day.self = new _Day
-            {
-                name = day_name,
-                index = day_index
-            };
-            // Going backward
-            while (day.MakePrevDay())
-            {
-                days.Add(day.self);
-            }
-            return days;
-        }
+        //public static List<Day> Calculate(int day_index, string day_name, int month_index, bool leap)
+        //{
+        //    List<Day> days = new List<Day>();
+        //    Day day = new Day(day_name, day_index);
+        //    int maxIndex = GetMonthMax(month_index, leap);
+        //    days.Add(day);
+        //    // Going forward
+        //    while (day.MakeNextDay(maxIndex))
+        //    {
+        //        days.Add(day);
+        //    }
+        //    day = new Day
+        //    {
+        //        name = day_name,
+        //        index = day_index
+        //    };
+        //    // Going backward
+        //    while (day.MakePrevDay())
+        //    {
+        //        days.Add(day);
+        //    }
+        //    return days;
+        //}
 
         public bool MakePrevMonth()
         {
@@ -127,14 +122,5 @@ namespace Calender
             return true;
         }
 
-        public void SetDays(List<_Day> days)
-        {
-            self.days = days;
-        }
-
-        public List<_Day> GetDays()
-        {
-            return self.days;
-        }
     }
 }

@@ -8,8 +8,8 @@ namespace CalenderTest
         [TestMethod]
         public void TestMethod1()
         {
-            Calculations calender = new();
-
+            Day day = new Day();
+            day.MakeNextDay();
         }
     }
 }

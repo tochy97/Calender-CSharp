@@ -8,95 +8,109 @@ using System.Xml.Linq;
 
 namespace Calender
 {
-
-    public struct _Day
-    {
-        public string name;
-        public int index;
-    }
     public class Day
     {
-        public _Day self;
-        public Day (string name, int index)
+        public struct _Day
         {
-            self.name = name;
-            self.index = index;
+            public string name;
+            public int index;
+            public int week_index;
         }
-
-        private static readonly string[] values =
+        public string name;
+        public int index;
+        public int week_index;
+        public int month;
+        public int year;
+        private DateTime today = DateTime.Today;
+        public Day ()
         {
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday"
-        };
-
-
-        public static _Day CalcNextDay(string name, int index, int maxMonthIndex)
+            this.index = today.Day;
+            this.name = today.DayOfWeek.ToString();
+            this.week_index = Array.IndexOf(Constants.WeekNames, name);
+            this.month = today.Month;
+            this.year = today.Year;
+        }
+        public Day (string name)
         {
-            int position = Array.IndexOf(values, name) + 1;
+            this.name = name;
+            this.week_index = Array.IndexOf(Constants.WeekNames, this.name);
+            this.index = CalcIndexFromName(name, week_index);
+            this.month = today.Month;
+            this.year = today.Year;
+        }
+        public Day(string name, int month, int year)
+        {
+            this.name = name;
+            this.week_index = Array.IndexOf(Constants.WeekNames, this.name);
+            this.index = CalcIndexFromName(name, week_index);
+            this.month = month;
+            this.year = year;
+        }
+        public Day(string name, int index, int month, int year)
+        {
+            this.name = name;
+            this.week_index = Array.IndexOf(Constants.WeekNames, this.name);
+            this.index = index;
+            this.month = month;
+            this.year = year;
+        }
+        private int CalcIndexFromName(string name, int week_index)
+        {
+            int today_index = today.Day;
+            string today_name = today.DayOfWeek.ToString();
+            int today_week_index = Array.IndexOf(Constants.WeekNames, today_name);
+            return today_index + (week_index - today_week_index);
+        }
+        private static _Day NextDay(string name, int index)
+        {
+            int position = Array.IndexOf(Constants.WeekNames, name) + 1;
             if (position == -1)
             {
                 position = 0;
             }
-            index = index + 1;
-            name = values[position];
-            if (index > maxMonthIndex)
-            {
-                index = -1;
-            }
             return new _Day
             {
-                name = name,
-                index = index
+                name = Constants.WeekNames[position],
+                index = index + 1,
+                week_index = position
             };
         }
-
-        public bool MakeNextDay(int maxMonthIndex)
+        public void MakeNextDay()
         {
-            _Day result = CalcNextDay(self.name, self.index, maxMonthIndex);
-            if (result.index == -1)
+            _Day new_day = NextDay(this.name, this.index);
+            int maxMonthIndex = Constants.MonthMax[this.month - 1];
+            if (new_day.index > maxMonthIndex)
             {
-                return false;
+                throw new ArgumentOutOfRangeException("Month");
             }
-            self.name = result.name;
-            self.index = result.index;
-            return true;
+            this.name = new_day.name;
+            this.index = new_day.index;
+            this.week_index = new_day.week_index;
         }
-        public static _Day CalcPrevDay(string name, int index)
+        private _Day PrevDay(string name, int index)
         {
-            int position = Array.IndexOf(values, name) - 1;
+            int position = Array.IndexOf(Constants.WeekNames, name) - 1;
             if (position == -1)
             {
                 position = 6;
             }
-            index = index + 1;
-            name = values[position];
-            if (index == 0)
-            {
-                index = -1;
-                name = "";
-            }
             return new _Day
             {
-                name = name,
-                index = index
+                name = Constants.WeekNames[position],
+                index = index - 1,
+                week_index = position
             };
         }
-
-        public bool MakePrevDay()
+        public void MakePrevDay()
         {
-            _Day result = CalcPrevDay(self.name, self.index);
-            if (result.index == -1)
+            _Day new_day = PrevDay(this.name, this.index);
+            if (new_day.index < 1)
             {
-                return false;
+                throw new ArgumentOutOfRangeException("Month");
             }
-            self.name = result.name;
-            self.index = result.index;
-            return true;
+            this.name = new_day.name;
+            this.index = new_day.index;
+            this.week_index = new_day.week_index;
         }
     }
 }

@@ -8,15 +8,13 @@ namespace Calender
 {
     public class Calculations
     {
-        public struct _Calender
+        List<Year> years;
+        int start;
+        int end;
+        public static bool IsYearLeap(int year)
         {
-            List<_Year> years;
+            return year % 4 == 0;
         }
-        public Month GetCalender() 
-        {
-            return new Month();
-        }
-
         public Year GetYear(int year)
         {
             System.Console.WriteLine("Getting year: " + year);
